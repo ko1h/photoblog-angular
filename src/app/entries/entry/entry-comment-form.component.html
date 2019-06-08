@@ -1,11 +1,19 @@
-<form (submit)="onSubmit()" #commentForm="ngForm">
+<form (submit)="onSubmit()" #commentForm="ngForm" novalidate>
   <div>
     <label for="name">Name</label>
-    <input type="text" name="name" [(ngModel)]="name" required />
+    <input type="text" name="name" [(ngModel)]="name" required minlength="3" #nameField="ngModel" />
+    <div class="alert alert-danger" *ngIf="(commentForm.submitted || nameField.dirty || nameField.touched) && nameField.errors">
+      <div [hidden]="!nameField.errors.required">Name is required</div>
+      <div [hidden]="!nameField.errors.minLength">Name must be a minimun of 2 character long</div>
+    </div>
   </div>
   <div>
     <label for="commment">Commment</label>
-    <textarea name="comment" [(ngModel)]="comment" required></textarea>
+    <textarea name="comment" [(ngModel)]="comment" required minlength="3" #commentFied="ngModel"></textarea>
+    <div class="alert alert-danger" *ngIf="(commentForm.submitted || commentField.dirty || commentField.touched) && commentField.errors">
+      <div [hidden]="!commentField.errors.required">comment is required</div>
+      <div [hidden]="!commentField.errors.minLength">comment must be a minimun of 2 character long</div>
+    </div>
   </div>
   <div>
     <button>Submit</button>
